@@ -1,1 +1,21 @@
 SQL
+SQL注入是一种代码注入技术，攻击者通过在应用程序的输入字段中插入恶意的SQL代码，试图操纵后端数据库查询。其核心原因是应用程序未对用户输入进行严格过滤或转义，直接将输入拼接到SQL语句中执行。
+一个简单的例子
+
+假设后端登录验证的SQL语句是：
+sql
+
+SELECT * FROM users WHERE username = '输入的用户名' AND password = '输入的密码';
+
+正常输入：
+用户名 admin，密码 123456
+SQL变为：SELECT * FROM users WHERE username='admin' AND password='123456';
+
+攻击者输入：
+用户名 admin' -- （注意--后面有空格）
+此时SQL变为：
+sql
+
+SELECT * FROM users WHERE username='admin' -- ' AND password='xxxx';
+
+-- 在SQL中是注释符，后面的条件被注释掉。无需密码即可登录
